@@ -1,0 +1,200 @@
+doctype html
+head
+    title= title
+    //link(rel='stylesheet', href='/stylesheets/style.css')
+    script(lang='javascript', src='/jquery.min.js')
+    link(rel='stylesheet', href='css/bootstrap.min.css')
+    script(lang='javascript', src='/js/bootstrap.min.js')
+body
+    block content
+
+script(lang='javascript').
+    $('.container')
+        .on('touchstart', '.touch-hover', function () {
+            console.log("touch start");
+            $(this).addClass('hover');
+            $(this).removeClass('normal');
+        })
+        .on('touchend', '.touch-hover', function () {
+            console.log("touch end");
+            $(this).addClass('normal');
+            $(this).removeClass('hover');
+        });
+    $('#p1').on('touchend', function () {
+        console.log("p1");
+        p.then(pattern4)
+            .then(function () {
+                pattern1();
+            });
+    });
+    $('#p2').on('touchend', function () {
+        console.log("p2");
+        p.then(pattern4)
+            .then(function () {
+                pattern2();
+            });
+    });
+    $('#p3').on('touchend', function () {
+        console.log("p3");
+        p.then(pattern4)
+            .then(function () {
+                pattern3();
+            });
+    });
+    $('#p4').on('touchend', function () {
+        console.log("p4");
+        p.then(pattern4);
+    });
+
+    var ledState = 0; // 0:OFF 1:ON
+    var p = new Promise(function (resolve) {
+        resolve();
+    });
+    var timerId = -1;
+
+    function pattern1() {
+        console.log("call pattern1");
+        // ステートをONに変更
+        changeState(1);
+
+        // 1.0秒ON 1.0秒OFF の繰り返し
+        var turnOnMSec = 1000;
+        var turnOffMSec = 1000;
+
+        timerId = setInterval(function () {
+            p.then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p1 then 1");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOnMSec);
+                });
+            }).then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p1 then 2");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOffMSec);
+                });
+            })
+
+            if (!ledState) {
+                clearInterval(timerId);
+                timerId = -1;
+            }
+        }, turnOnMSec + turnOffMSec);
+    }
+
+    function pattern2() {
+        console.log("call pattern2");
+        // ステートをONに変更
+        changeState(1);
+
+        // 0.5秒ON 0.5秒OFF の繰り返し
+        var turnOnMSec = 500;
+        var turnOffMSec = 500;
+
+        timerId = setInterval(function () {
+            p.then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p2 then 1");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOnMSec);
+                });
+            }).then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p2 then 2");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOffMSec);
+                });
+            })
+
+            if (!ledState) {
+                clearInterval(timerId);
+                timerId = -1;
+            }
+        }, turnOnMSec + turnOffMSec);
+    }
+
+    function pattern3() {
+        console.log("call pattern3");
+        // ステートをONに変更
+        changeState(1);
+
+        // 0.5秒ON 0.5秒OFF の繰り返し
+        var turnOnMSec = 200;
+        var turnOffMSec1 = 100;
+        var turnOffMSec2 = 500;
+
+        timerId = setInterval(function () {
+            p.then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p3 then 1");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOnMSec);
+                });
+            }).then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p3 then 2-1");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOffMSec1);
+                });
+            }).then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p3 then 1");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOnMSec);
+                });
+            }).then(function () {
+                return new Promise(function (resolve) {
+                    console.log("p3 then 2-2");
+                    setTimeout(function () {
+                        resolve();
+                    }, turnOffMSec2);
+                });
+            })
+
+            if (!ledState) {
+                clearInterval(timerId);
+                timerId = -1;
+            }
+        }, turnOnMSec * 2 + turnOffMSec1 + turnOffMSec2);
+    }
+
+    function pattern4() {
+        // Off
+        return new Promise(function (resolve) {
+            console.log("then pattern4");
+            ledOff();
+            changeState(0);
+            var tmpId = setInterval( function () {
+                if (timerId < 0) {
+                    clearInterval(tmpId);
+                    resolve();
+                }
+            }, 100);
+        });
+    }
+
+    function ledOn(percent) {
+        console.log("call ledOn");
+        // TODO: rpio使ってON処理実装
+    }
+    function ledOff() {
+        console.log("call ledOff");
+        return new Promise(function (resolve) {
+            resolve();
+        });
+    }
+    function changeState(state) {
+        console.log("call changeState");
+        return new Promise(function (resolve) {
+            ledState = state;
+            resolve();
+        });
+    }

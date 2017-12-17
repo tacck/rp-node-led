@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    style(type='text/css').
+        .ptrn-btn {
+            color: whitesmoke;
+            background-color: #00693E;
+            height: 3em;
+            font-size: 3em;
+        }
+
+        body {
+            color: whitesmoke;
+            background-color: #B81C22;
+        }
+
+        .ptrn-btn.normal {
+            color: whitesmoke;
+            background-color: #00693E;
+        }
+
+        .ptrn-btn.hover {
+            color: whitesmoke;
+            background-color: darkseagreen;
+        }
+
+        .text-large {
+            font-size: 5em;
+        }
+
+    div.container
+        div.col-md-12
+            h2.text-large Select Pattern
+            button.ptrn-btn.btn.btn-lg.btn-block.touch-hover.normal#p1 Pattern1
+            button.ptrn-btn.btn.btn-lg.btn-block.touch-hover.normal#p2 Pattern2
+            button.ptrn-btn.btn.btn-lg.btn-block.touch-hover.normal#p3 Pattern3
+            button.ptrn-btn.btn.btn-lg.btn-block.touch-hover.normal#p4 Off
