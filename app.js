@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var rpio = require('rpio');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -26,6 +27,21 @@ app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 
 app.use('/', index);
 app.use('/users', users);
+
+////
+var LED_PIN_1 = 15; // GPIO22
+rpio.open(LED_PIN_1, rpio.OUTPUT, rpio.LOW);
+
+app.get('/api/ledOn', function (req, res, next) {
+    rpio.write(LED_PIN_1, rpio.HIGH);
+    res.send('ledOn');
+});
+
+app.get('/api/ledOff', function (req, res, next) {
+    rpio.write(LED_PIN_1, rpio.LOW);
+    res.send('ledOff');
+});
+////
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,7 +1,6 @@
 doctype html
 head
     title= title
-    //link(rel='stylesheet', href='/stylesheets/style.css')
     script(lang='javascript', src='/jquery.min.js')
     link(rel='stylesheet', href='css/bootstrap.min.css')
     script(lang='javascript', src='/js/bootstrap.min.js')
@@ -11,38 +10,32 @@ body
 script(lang='javascript').
     $('.container')
         .on('touchstart', '.touch-hover', function () {
-            console.log("touch start");
             $(this).addClass('hover');
             $(this).removeClass('normal');
         })
         .on('touchend', '.touch-hover', function () {
-            console.log("touch end");
             $(this).addClass('normal');
             $(this).removeClass('hover');
         });
     $('#p1').on('touchend', function () {
-        console.log("p1");
         p.then(pattern4)
             .then(function () {
                 pattern1();
             });
     });
     $('#p2').on('touchend', function () {
-        console.log("p2");
         p.then(pattern4)
             .then(function () {
                 pattern2();
             });
     });
     $('#p3').on('touchend', function () {
-        console.log("p3");
         p.then(pattern4)
             .then(function () {
                 pattern3();
             });
     });
     $('#p4').on('touchend', function () {
-        console.log("p4");
         p.then(pattern4);
     });
 
@@ -53,7 +46,6 @@ script(lang='javascript').
     var timerId = -1;
 
     function pattern1() {
-        console.log("call pattern1");
         // ステートをONに変更
         changeState(1);
 
@@ -64,14 +56,14 @@ script(lang='javascript').
         timerId = setInterval(function () {
             p.then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p1 then 1");
+                    ledOn();
                     setTimeout(function () {
                         resolve();
                     }, turnOnMSec);
                 });
             }).then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p1 then 2");
+                    ledOff();
                     setTimeout(function () {
                         resolve();
                     }, turnOffMSec);
@@ -86,7 +78,6 @@ script(lang='javascript').
     }
 
     function pattern2() {
-        console.log("call pattern2");
         // ステートをONに変更
         changeState(1);
 
@@ -97,14 +88,14 @@ script(lang='javascript').
         timerId = setInterval(function () {
             p.then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p2 then 1");
+                    ledOn();
                     setTimeout(function () {
                         resolve();
                     }, turnOnMSec);
                 });
             }).then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p2 then 2");
+                    ledOff();
                     setTimeout(function () {
                         resolve();
                     }, turnOffMSec);
@@ -119,7 +110,6 @@ script(lang='javascript').
     }
 
     function pattern3() {
-        console.log("call pattern3");
         // ステートをONに変更
         changeState(1);
 
@@ -131,28 +121,28 @@ script(lang='javascript').
         timerId = setInterval(function () {
             p.then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p3 then 1");
+                    ledOn();
                     setTimeout(function () {
                         resolve();
                     }, turnOnMSec);
                 });
             }).then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p3 then 2-1");
+                    ledOff();
                     setTimeout(function () {
                         resolve();
                     }, turnOffMSec1);
                 });
             }).then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p3 then 1");
+                    ledOn();
                     setTimeout(function () {
                         resolve();
                     }, turnOnMSec);
                 });
             }).then(function () {
                 return new Promise(function (resolve) {
-                    console.log("p3 then 2-2");
+                    ledOff();
                     setTimeout(function () {
                         resolve();
                     }, turnOffMSec2);
@@ -169,7 +159,6 @@ script(lang='javascript').
     function pattern4() {
         // Off
         return new Promise(function (resolve) {
-            console.log("then pattern4");
             ledOff();
             changeState(0);
             var tmpId = setInterval( function () {
@@ -182,17 +171,14 @@ script(lang='javascript').
     }
 
     function ledOn(percent) {
-        console.log("call ledOn");
-        // TODO: rpio使ってON処理実装
+        $.get('/api/ledOn');
     }
+
     function ledOff() {
-        console.log("call ledOff");
-        return new Promise(function (resolve) {
-            resolve();
-        });
+        $.get('/api/ledOff');
     }
+
     function changeState(state) {
-        console.log("call changeState");
         return new Promise(function (resolve) {
             ledState = state;
             resolve();
